@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Time } from 'lightweight-charts';
-import { Bell, Settings, LogOut, Menu, X, RefreshCw, Loader2 } from 'lucide-react';
+import { Bell, Settings, LogOut, Menu, X, RefreshCw, Loader2, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/ThemeToggle';
 import TradingChart from '@/components/trading/TradingChart';
@@ -417,10 +417,12 @@ const Dashboard = () => {
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center">
-                <span className="text-lg font-bold text-background">T</span>
+              <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
+                <Zap className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span className="font-bold text-xl text-foreground hidden sm:block">TradeSense</span>
+              <span className="text-xl font-bold hidden sm:block">
+                Trade<span className="text-gradient">Sense</span> AI
+              </span>
             </Link>
           </div>
 

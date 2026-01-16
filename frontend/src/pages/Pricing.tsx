@@ -88,10 +88,12 @@ const Pricing = () => {
       <header className="sticky top-0 z-50 glass border-b border-border">
         <div className="container flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-button">
-              <span className="text-xl font-bold text-background">T</span>
+            <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
+              <Zap className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">TradeSense</span>
+            <span className="text-xl font-bold">
+              Trade<span className="text-gradient">Sense</span> AI
+            </span>
           </Link>
           <div className="flex items-center gap-4">
             <LanguageSelector />

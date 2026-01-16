@@ -1,8 +1,6 @@
 // Helper small API wrapper for frontend
-// Use relative paths when Vite proxy is enabled (recommended).
-// If you prefer absolute URLs, set VITE_API_PROXY in the environment and the helper will use it.
-
-const API_BASE = import.meta.env.VITE_API_PROXY || "";
+// Use environment variable for API URL or fallback to relative path
+const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_PROXY || "";
 
 type ApiError = { status: number; data: unknown };
 

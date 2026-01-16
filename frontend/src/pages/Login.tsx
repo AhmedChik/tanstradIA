@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Eye, EyeOff, TrendingUp, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Zap, Mail, Lock } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { login as apiLogin, setToken, clearToken, setUserEmail, setUserName, User } from "@/lib/api";
 import { useTranslation } from 'react-i18next';
@@ -74,11 +74,11 @@ const Login = () => {
       {/* Header */}
       <header className="relative z-10 p-6 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
-            <TrendingUp className="w-6 h-6 text-primary-foreground" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
+            <Zap className="w-6 h-6 text-primary-foreground" />
           </div>
-          <span className="text-xl font-bold text-foreground">
-            Trade<span className="text-primary">Sense</span> AI
+          <span className="text-xl font-bold">
+            Trade<span className="text-gradient">Sense</span> AI
           </span>
         </Link>
         <div className="flex gap-2">

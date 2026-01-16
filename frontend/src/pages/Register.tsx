@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -72,10 +72,12 @@ const Register = () => {
       {/* Header */}
       <header className="relative z-10 flex items-center justify-between p-4 sm:p-6">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-button">
-            <span className="text-xl font-bold text-background">T</span>
+          <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
+            <Zap className="w-6 h-6 text-primary-foreground" />
           </div>
-          <span className="text-xl font-bold text-foreground">TradeSense</span>
+          <span className="text-xl font-bold">
+            Trade<span className="text-gradient">Sense</span> AI
+          </span>
         </Link>
         <div className="flex gap-2">
           <LanguageSelector />

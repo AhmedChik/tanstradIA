@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Mail, ArrowLeft, CheckCircle, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -12,12 +12,12 @@ const ForgotPassword = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email) {
       toast.error('Veuillez entrer votre adresse email');
       return;
     }
-    
+
     // Simulation d'envoi
     setIsSubmitted(true);
     toast.success('Email de récupération envoyé!');
@@ -30,14 +30,16 @@ const ForgotPassword = () => {
       <div className="absolute inset-0 bg-gradient-glow opacity-30" />
       <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-primary/10 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-accent/10 rounded-full blur-3xl" />
-      
+
       {/* Header */}
       <header className="relative z-10 flex items-center justify-between p-4 sm:p-6">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-button">
-            <span className="text-xl font-bold text-background">T</span>
+          <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
+            <Zap className="w-6 h-6 text-primary-foreground" />
           </div>
-          <span className="text-xl font-bold text-foreground">TradeSense</span>
+          <span className="text-xl font-bold">
+            Trade<span className="text-gradient">Sense</span> AI
+          </span>
         </Link>
         <ThemeToggle />
       </header>
@@ -46,8 +48,8 @@ const ForgotPassword = () => {
       <main className="relative z-10 flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
           {/* Back Link */}
-          <Link 
-            to="/login" 
+          <Link
+            to="/login"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />

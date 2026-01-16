@@ -63,7 +63,7 @@ def create_app():
 
 if __name__ == "__main__":
     # Allow host and port to be configured via environment variables for flexibility
-    host = os.environ.get("HOST", "127.0.0.1")
+    host = os.environ.get("HOST", "0.0.0.0")
     port = int(os.environ.get("PORT", 5000))
     app = create_app()
     print(f">>> Flask starting on http://{host}:{port}", flush=True)

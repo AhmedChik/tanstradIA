@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Settings, Shield, Users, CheckCircle, XCircle, ArrowLeft, Search, Filter, Loader2 } from 'lucide-react';
+import { Settings, Shield, Users, CheckCircle, XCircle, ArrowLeft, Search, Filter, Loader2, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -151,10 +151,12 @@ const Admin = () => {
             <header className="sticky top-0 z-50 glass border-b border-border">
                 <div className="container flex items-center justify-between h-16">
                     <Link to="/" className="flex items-center gap-2">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-button">
-                            <span className="text-xl font-bold text-background">T</span>
+                        <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
+                            <Zap className="w-6 h-6 text-primary-foreground" />
                         </div>
-                        <span className="text-xl font-bold text-foreground">TradeSense</span>
+                        <span className="text-xl font-bold">
+                            Trade<span className="text-gradient">Sense</span> AI
+                        </span>
                     </Link>
                     <div className="flex items-center gap-4">
                         <Badge variant="default" className="bg-gradient-primary">
