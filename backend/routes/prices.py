@@ -1,11 +1,9 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
 from services.prices import get_yahoo_price, get_yahoo_history
 
 prices_bp = Blueprint("prices", __name__, url_prefix="/api/prices")
 
 @prices_bp.get("/yahoo")
-@jwt_required(optional=True)  # tu peux enlever si tu veux public
 def yahoo_price():
     ticker = request.args.get("ticker", "").strip()
     if not ticker:
@@ -17,7 +15,6 @@ def yahoo_price():
         return jsonify({"error": str(e)}), 500
 
 @prices_bp.get("/yahoo/history")
-@jwt_required(optional=True)
 def yahoo_history():
     ticker = request.args.get("ticker", "").strip()
     interval = request.args.get("interval", "1m")  # 1m,5m,15m,1h

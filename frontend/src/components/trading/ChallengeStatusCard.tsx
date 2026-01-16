@@ -1,6 +1,8 @@
 import { TrendingUp, TrendingDown, Target, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { formatCurrencyLarge, formatCurrencyWithSign } from '@/lib/currency';
+import { useTranslation } from 'react-i18next';
 
 interface ChallengeStatusCardProps {
   status: 'active' | 'passed' | 'failed' | 'pending';
@@ -10,6 +12,7 @@ interface ChallengeStatusCardProps {
   maxDailyLoss: number;
   maxTotalLoss: number;
   profitTarget: number;
+  currency?: string;
 }
 
 const ChallengeStatusCard = ({
@@ -20,12 +23,15 @@ const ChallengeStatusCard = ({
   maxDailyLoss,
   maxTotalLoss,
   profitTarget,
+  currency = 'MAD',
 }: ChallengeStatusCardProps) => {
+  const { t } = useTranslation();
+
   const totalPnL = currentBalance - initialBalance;
   const totalPnLPercent = (totalPnL / initialBalance) * 100;
   const dailyPnL = currentBalance - dailyStartBalance;
   const dailyPnLPercent = (dailyPnL / dailyStartBalance) * 100;
-  
+
   const profitProgress = Math.max(0, Math.min(100, (totalPnLPercent / profitTarget) * 100));
   const dailyLossProgress = Math.max(0, Math.min(100, (Math.abs(dailyPnLPercent) / maxDailyLoss) * 100));
   const totalLossProgress = Math.max(0, Math.min(100, (Math.abs(totalPnLPercent) / maxTotalLoss) * 100));
@@ -60,8 +66,8 @@ const ChallengeStatusCard = ({
         <div className="flex items-center gap-3">
           {getStatusIcon()}
           <div>
-            <h3 className="font-semibold text-foreground">Statut du Challenge</h3>
-            <p className="text-sm text-muted-foreground">Performance en temps réel</p>
+            <h3 className="font-semibold text-foreground">{t('dashboard.myChallenge')}</h3>
+            <p className="text-sm text-muted-foreground">{t('dashboard.realTimePerformance')}</p>
           </div>
         </div>
         {getStatusBadge()}
@@ -70,15 +76,15 @@ const ChallengeStatusCard = ({
       {/* Soldes */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="p-4 rounded-lg bg-card/50 border border-border/50">
-          <p className="text-sm text-muted-foreground mb-1">Solde initial</p>
+          <p className="text-sm text-muted-foreground mb-1">{t('dashboard.initialBalance')}</p>
           <p className="text-xl font-mono font-bold text-foreground">
-            ${initialBalance.toLocaleString()}
+            {formatCurrencyLarge(initialBalance, currency)}
           </p>
         </div>
         <div className="p-4 rounded-lg bg-card/50 border border-border/50">
-          <p className="text-sm text-muted-foreground mb-1">Solde actuel</p>
+          <p className="text-sm text-muted-foreground mb-1">{t('dashboard.currentBalance')}</p>
           <p className={`text-xl font-mono font-bold ${totalPnL >= 0 ? 'text-success' : 'text-destructive'}`}>
-            ${currentBalance.toLocaleString()}
+            {formatCurrencyLarge(currentBalance, currency)}
           </p>
         </div>
       </div>
@@ -91,11 +97,11 @@ const ChallengeStatusCard = ({
           ) : (
             <TrendingDown className="w-5 h-5 text-destructive" />
           )}
-          <span className="text-muted-foreground">P&L Total</span>
+          <span className="text-muted-foreground">{t('dashboard.totalPnL')}</span>
         </div>
         <div className="text-right">
           <p className={`font-mono font-bold ${totalPnL >= 0 ? 'text-success' : 'text-destructive'}`}>
-            {totalPnL >= 0 ? '+' : ''}{totalPnL.toFixed(2)}$
+            {formatCurrencyWithSign(totalPnL, currency)}
           </p>
           <p className={`text-sm ${totalPnL >= 0 ? 'text-success' : 'text-destructive'}`}>
             {totalPnL >= 0 ? '+' : ''}{totalPnLPercent.toFixed(2)}%
@@ -110,7 +116,7 @@ const ChallengeStatusCard = ({
           <div className="flex items-center justify-between text-sm mb-2">
             <div className="flex items-center gap-2">
               <Target className="w-4 h-4 text-success" />
-              <span className="text-muted-foreground">Objectif de profit ({profitTarget}%)</span>
+              <span className="text-muted-foreground">{t('dashboard.profitTarget')} ({profitTarget}%)</span>
             </div>
             <span className="font-mono text-foreground">{totalPnLPercent.toFixed(2)}%</span>
           </div>
@@ -122,14 +128,14 @@ const ChallengeStatusCard = ({
           <div className="flex items-center justify-between text-sm mb-2">
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-warning" />
-              <span className="text-muted-foreground">Perte max jour ({maxDailyLoss}%)</span>
+              <span className="text-muted-foreground">{t('dashboard.maxDailyLoss')} ({maxDailyLoss}%)</span>
             </div>
             <span className={`font-mono ${dailyPnLPercent < 0 ? 'text-warning' : 'text-foreground'}`}>
               {dailyPnLPercent.toFixed(2)}%
             </span>
           </div>
-          <Progress 
-            value={dailyLossProgress} 
+          <Progress
+            value={dailyLossProgress}
             className={`h-2 ${dailyLossProgress > 80 ? 'bg-destructive/20' : 'bg-muted'}`}
           />
         </div>
@@ -139,14 +145,14 @@ const ChallengeStatusCard = ({
           <div className="flex items-center justify-between text-sm mb-2">
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-destructive" />
-              <span className="text-muted-foreground">Perte max totale ({maxTotalLoss}%)</span>
+              <span className="text-muted-foreground">{t('dashboard.maxTotalLoss')} ({maxTotalLoss}%)</span>
             </div>
             <span className={`font-mono ${totalPnLPercent < -5 ? 'text-destructive' : 'text-foreground'}`}>
               {Math.min(0, totalPnLPercent).toFixed(2)}%
             </span>
           </div>
-          <Progress 
-            value={totalLossProgress} 
+          <Progress
+            value={totalLossProgress}
             className={`h-2 ${totalLossProgress > 80 ? 'bg-destructive/20' : 'bg-muted'}`}
           />
         </div>

@@ -1,11 +1,14 @@
 import { Zap, Twitter, Linkedin, Youtube, Instagram } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+  const { t } = useTranslation();
+
   const links = {
-    produit: ["Trading IA", "Signaux", "Actualités", "Communauté", "MasterClass"],
+    produit: [t('nav.trading'), t('nav.news'), t('nav.community'), t('nav.masterclass')],
     ressources: ["Documentation", "API", "Blog", "Webinaires", "Tutoriels"],
-    entreprise: ["À Propos", "Carrières", "Presse", "Partenaires", "Contact"],
-    legal: ["Conditions", "Confidentialité", "Cookies", "Risques"],
+    entreprise: [t('footer.about'), "Carrières", "Presse", "Partenaires", "Contact"],
+    legal: [t('footer.terms'), t('footer.privacy'), "Cookies", "Risques"],
   };
 
   return (
@@ -23,13 +26,13 @@ const Footer = () => {
               </span>
             </a>
             <p className="text-muted-foreground text-sm mb-6 max-w-xs">
-              La plateforme de trading nouvelle génération propulsée par l'intelligence artificielle.
+              {t('footer.description')}
             </p>
             <div className="flex gap-4">
               {[Twitter, Linkedin, Youtube, Instagram].map((Icon, index) => (
-                <a 
+                <a
                   key={index}
-                  href="#" 
+                  href="#"
                   className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
                 >
                   <Icon className="w-5 h-5" />
@@ -53,7 +56,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Ressources</h4>
+            <h4 className="font-semibold mb-4">{t('footer.navigation')}</h4>
             <ul className="space-y-2">
               {links.ressources.map((link, index) => (
                 <li key={index}>
@@ -66,7 +69,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Entreprise</h4>
+            <h4 className="font-semibold mb-4">{t('footer.company')}</h4>
             <ul className="space-y-2">
               {links.entreprise.map((link, index) => (
                 <li key={index}>
@@ -79,7 +82,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Légal</h4>
+            <h4 className="font-semibold mb-4">{t('footer.legal')}</h4>
             <ul className="space-y-2">
               {links.legal.map((link, index) => (
                 <li key={index}>
@@ -95,7 +98,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © 2024 TradeSense AI. Tous droits réservés.
+            {t('footer.copyright')}
           </p>
           <p className="text-xs text-muted-foreground max-w-md text-center md:text-right">
             Le trading comporte des risques. Les performances passées ne garantissent pas les résultats futurs.

@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { X, TrendingUp, TrendingDown } from 'lucide-react';
 import { toast } from 'sonner';
+import { formatCurrency, formatCurrencyWithSign } from '@/lib/currency';
+import { useTranslation } from 'react-i18next';
 
 interface Position {
   id: number;
@@ -13,10 +15,13 @@ interface Position {
 
 interface OpenPositionsProps {
   positions: Position[];
+  currency?: string;
   onClosePosition?: (id: number, exitPrice: number) => void;
 }
 
-const OpenPositions = ({ positions, onClosePosition }: OpenPositionsProps) => {
+const OpenPositions = ({ positions, currency = 'MAD', onClosePosition }: OpenPositionsProps) => {
+  const { t } = useTranslation();
+
   const calculatePnL = (position: Position) => {
     const multiplier = position.action === 'buy' ? 1 : -1;
     return (position.currentPrice - position.entryPrice) * position.quantity * multiplier;
@@ -30,7 +35,7 @@ const OpenPositions = ({ positions, onClosePosition }: OpenPositionsProps) => {
   if (positions.length === 0) {
     return (
       <div className="p-4 text-center text-muted-foreground">
-        <p>Aucune position ouverte</p>
+        <p>{t('dashboard.activePositions')}</p>
       </div>
     );
   }
@@ -40,7 +45,7 @@ const OpenPositions = ({ positions, onClosePosition }: OpenPositionsProps) => {
       {positions.map((position) => {
         const pnl = calculatePnL(position);
         const pnlPercent = ((pnl / (position.entryPrice * position.quantity)) * 100);
-        
+
         return (
           <div key={position.id} className="p-3 hover:bg-card/50 transition-colors">
             <div className="flex items-center justify-between mb-2">
@@ -62,15 +67,15 @@ const OpenPositions = ({ positions, onClosePosition }: OpenPositionsProps) => {
                 </div>
               </div>
               <Button
-                variant="ghost"
+                variant="destructive"
                 size="sm"
                 onClick={() => handleClose(position)}
-                className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                className="h-8 px-3 text-xs"
               >
-                <X className="w-4 h-4" />
+                {t('common.close')}
               </Button>
             </div>
-            
+
             <div className="grid grid-cols-4 gap-2 text-xs">
               <div>
                 <span className="text-muted-foreground">Qté</span>
@@ -78,16 +83,16 @@ const OpenPositions = ({ positions, onClosePosition }: OpenPositionsProps) => {
               </div>
               <div>
                 <span className="text-muted-foreground">Entrée</span>
-                <p className="font-mono text-foreground">${position.entryPrice.toFixed(2)}</p>
+                <p className="font-mono text-foreground">{formatCurrency(position.entryPrice, currency)}</p>
               </div>
               <div>
                 <span className="text-muted-foreground">Actuel</span>
-                <p className="font-mono text-foreground">${position.currentPrice.toFixed(2)}</p>
+                <p className="font-mono text-foreground">{formatCurrency(position.currentPrice, currency)}</p>
               </div>
               <div>
                 <span className="text-muted-foreground">P&L</span>
                 <p className={`font-mono font-semibold ${pnl >= 0 ? 'text-success' : 'text-destructive'}`}>
-                  {pnl >= 0 ? '+' : ''}{pnl.toFixed(2)}$
+                  {formatCurrencyWithSign(pnl, currency)}
                   <span className="text-[10px] ml-1">({pnlPercent >= 0 ? '+' : ''}{pnlPercent.toFixed(1)}%)</span>
                 </p>
               </div>

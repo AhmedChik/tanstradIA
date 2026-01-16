@@ -55,16 +55,16 @@
     --radius: 1.5rem;
 
     /* Custom gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(187 100% 50%) 0%, hsl(220 100% 60%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(333 71% 50%) 0%, hsl(300 70% 55%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(222 47% 10%) 0%, hsl(222 47% 6%) 100%);
-    --gradient-glow: radial-gradient(ellipse at center, hsl(187 100% 50% / 0.15) 0%, transparent 70%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(333 71% 50% / 0.15) 0%, transparent 70%);
     --gradient-success: linear-gradient(135deg, hsl(142 76% 45%) 0%, hsl(160 84% 39%) 100%);
     --gradient-danger: linear-gradient(135deg, hsl(0 72% 51%) 0%, hsl(350 80% 45%) 100%);
 
     /* Shadows */
-    --shadow-glow: 0 0 60px hsl(187 100% 50% / 0.2);
+    --shadow-glow: 0 0 60px hsl(333 71% 50% / 0.2);
     --shadow-card: 0 4px 24px hsl(222 47% 4% / 0.5);
-    --shadow-button: 0 4px 14px hsl(187 100% 50% / 0.3);
+    --shadow-button: 0 4px 14px hsl(333 71% 50% / 0.3);
 
     --sidebar-background: 222 47% 8%;
     --sidebar-foreground: 240 5% 10%;
@@ -131,16 +131,16 @@
     --ring: 328 85% 70%;
 
     /* Custom gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(187 100% 50%) 0%, hsl(220 100% 60%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(328 85% 70%) 0%, hsl(300 70% 65%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(222 47% 10%) 0%, hsl(222 47% 6%) 100%);
-    --gradient-glow: radial-gradient(ellipse at center, hsl(187 100% 50% / 0.15) 0%, transparent 70%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(328 85% 70% / 0.15) 0%, transparent 70%);
     --gradient-success: linear-gradient(135deg, hsl(142 76% 45%) 0%, hsl(160 84% 39%) 100%);
     --gradient-danger: linear-gradient(135deg, hsl(0 72% 51%) 0%, hsl(350 80% 45%) 100%);
 
     /* Shadows */
-    --shadow-glow: 0 0 60px hsl(187 100% 50% / 0.2);
+    --shadow-glow: 0 0 60px hsl(328 85% 70% / 0.2);
     --shadow-card: 0 4px 24px hsl(222 47% 4% / 0.5);
-    --shadow-button: 0 4px 14px hsl(187 100% 50% / 0.3);
+    --shadow-button: 0 4px 14px hsl(328 85% 70% / 0.3);
 
     --sidebar-background: 222 47% 8%;
     --sidebar-foreground: 0 0% 98%;
@@ -234,28 +234,63 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 1; box-shadow: 0 0 20px hsl(187 100% 50% / 0.3); }
-  50% { opacity: 0.8; box-shadow: 0 0 40px hsl(187 100% 50% / 0.5); }
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 20px hsl(187 100% 50% / 0.3);
+  }
+
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 40px hsl(187 100% 50% / 0.5);
+  }
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .animate-gradient {

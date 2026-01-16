@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from config import Config
@@ -12,13 +12,20 @@ from routes.leaderboard import leader_bp
 from routes.prices import prices_bp
 from routes.signals import signals_bp
 from routes.bvc import bvc_bp
+from routes.paypal import paypal_bp
+from routes.settings import settings_bp
+from routes.admin import admin_bp
 
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    CORS(app, resources={r"/api/*": {"origins": app.config["CORS_ORIGINS"].split(",")}}, supports_credentials=False)
+    CORS(app, resources={r"/api/*": {
+        "origins": app.config["CORS_ORIGINS"].split(","),
+        "allow_headers": ["Content-Type", "Authorization"],
+        "expose_headers": ["Content-Type", "Authorization"]
+    }})
     db.init_app(app)
     JWTManager(app)
 
@@ -29,8 +36,21 @@ def create_app():
     app.register_blueprint(prices_bp)
     app.register_blueprint(signals_bp)
     app.register_blueprint(bvc_bp)
+    app.register_blueprint(paypal_bp)
+    app.register_blueprint(settings_bp)
+    app.register_blueprint(admin_bp)
     
 
+    @app.before_request
+    def log_request_info():
+        if request.path.startswith('/api/'):
+            print(f"[DEBUG] {request.method} {request.path}")
+            print(f"[DEBUG] Headers: {dict(request.headers)}")
+            auth_header = request.headers.get('Authorization')
+            if auth_header:
+                print(f"[DEBUG] Authorization header present: {auth_header[:20]}...")
+            else:
+                print("[DEBUG] No Authorization header")
 
     @app.get("/health")
     def health():

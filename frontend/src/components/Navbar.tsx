@@ -2,16 +2,21 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Zap } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
-import {replace, useNavigate} from "react-router-dom";
+import LanguageSelector from "./LanguageSelector";
+import { replace, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const navLinks = [
-    { name: "Trading IA", href: "#trading" },
-    { name: "Actualités", href: "#news" },
-    { name: "Communauté", href: "#community" },
-    { name: "MasterClass", href: "#masterclass" },
+    { name: t('nav.trading'), href: "#trading" },
+    { name: t('nav.news'), href: "#news" },
+    { name: t('nav.leaderboard'), href: "#leaderboard" },
+    { name: t('nav.community'), href: "#community" },
+    { name: t('nav.masterclass'), href: "#masterclass" },
   ];
 
   return (
@@ -19,7 +24,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
               <Zap className="w-6 h-6 text-primary-foreground" />
             </div>
@@ -43,19 +48,21 @@ const Navbar = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
+            <LanguageSelector />
             <ThemeToggle />
-              <Button variant="ghost" className="w-full" onClick={() => {
-                  setIsOpen(false);
-                  navigate("/login", { replace: true });
-                  console.log("btn clicked");
-              }}>
-                  Connexion
-              </Button>
-            <Button variant="hero">Commencer Gratuit</Button>
+            <Button variant="ghost" className="w-full" onClick={() => {
+              setIsOpen(false);
+              navigate("/login", { replace: true });
+              console.log("btn clicked");
+            }}>
+              {t('nav.login')}
+            </Button>
+            <Button variant="hero" onClick={() => navigate("/pricing")}>{t('nav.startFree')}</Button>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2">
+            <LanguageSelector />
             <ThemeToggle />
             <button
               className="text-foreground"
@@ -81,14 +88,23 @@ const Navbar = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
-            <Button variant="ghost" className="w-full" onClick={() => {
-              setIsOpen(false);
-              navigate("/login", { replace: true });
-              console.log("btn clicked");
-            }}>
-              Connexion
-            </Button>
-                <Button variant="hero" className="w-full">Commencer Gratuit</Button>
+                <Button variant="ghost" className="w-full" onClick={() => {
+                  setIsOpen(false);
+                  navigate("/login", { replace: true });
+                  console.log("btn clicked");
+                }}>
+                  {t('nav.login')}
+                </Button>
+                <Button
+                  variant="hero"
+                  className="w-full"
+                  onClick={() => {
+                    setIsOpen(false);
+                    navigate("/pricing");
+                  }}
+                >
+                  {t('nav.startFree')}
+                </Button>
               </div>
             </div>
           </div>

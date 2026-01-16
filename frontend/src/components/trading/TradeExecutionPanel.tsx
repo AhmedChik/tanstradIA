@@ -5,15 +5,19 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TrendingUp, TrendingDown, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { formatCurrency } from '@/lib/currency';
+import { useTranslation } from 'react-i18next';
 
 interface TradeExecutionPanelProps {
   symbol: string;
   currentPrice: number;
   balance: number;
+  currency?: string;
   onTrade?: (action: 'buy' | 'sell', quantity: number, price: number) => void;
 }
 
-const TradeExecutionPanel = ({ symbol, currentPrice, balance, onTrade }: TradeExecutionPanelProps) => {
+const TradeExecutionPanel = ({ symbol, currentPrice, balance, currency = 'MAD', onTrade }: TradeExecutionPanelProps) => {
+  const { t } = useTranslation();
   const [quantity, setQuantity] = useState('');
   const [orderType, setOrderType] = useState('market');
 
@@ -43,19 +47,19 @@ const TradeExecutionPanel = ({ symbol, currentPrice, balance, onTrade }: TradeEx
         <div>
           <h3 className="font-semibold text-foreground">{symbol}</h3>
           <p className="text-2xl font-mono font-bold text-foreground">
-            ${currentPrice.toFixed(2)}
+            {formatCurrency(currentPrice, currency)}
           </p>
         </div>
         <div className="text-right">
-          <p className="text-sm text-muted-foreground">Solde disponible</p>
-          <p className="font-mono font-semibold text-foreground">${balance.toFixed(2)}</p>
+          <p className="text-sm text-muted-foreground">{t('dashboard.balance')}</p>
+          <p className="font-mono font-semibold text-foreground">{formatCurrency(balance, currency)}</p>
         </div>
       </div>
 
       <Tabs defaultValue="market" className="w-full">
         <TabsList className="w-full grid grid-cols-2 mb-4">
           <TabsTrigger value="market" onClick={() => setOrderType('market')}>
-            Marché
+            {t('dashboard.market')}
           </TabsTrigger>
           <TabsTrigger value="limit" onClick={() => setOrderType('limit')}>
             Limite
@@ -65,7 +69,7 @@ const TradeExecutionPanel = ({ symbol, currentPrice, balance, onTrade }: TradeEx
         <TabsContent value="market" className="space-y-4">
           <div>
             <Label htmlFor="quantity" className="text-muted-foreground">
-              Quantité
+              {t('dashboard.quantity')}
             </Label>
             <Input
               id="quantity"
@@ -79,7 +83,7 @@ const TradeExecutionPanel = ({ symbol, currentPrice, balance, onTrade }: TradeEx
 
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Valeur totale</span>
-            <span className="font-mono text-foreground">${totalValue.toFixed(2)}</span>
+            <span className="font-mono text-foreground">{formatCurrency(totalValue, currency)}</span>
           </div>
 
           <div className="flex items-center gap-2 p-3 rounded-lg bg-warning/10 border border-warning/30">
@@ -96,7 +100,7 @@ const TradeExecutionPanel = ({ symbol, currentPrice, balance, onTrade }: TradeEx
               disabled={!quantity || parseFloat(quantity) <= 0}
             >
               <TrendingUp className="w-4 h-4 mr-2" />
-              Acheter
+              {t('dashboard.buy')}
             </Button>
             <Button
               onClick={() => handleTrade('sell')}
@@ -104,7 +108,7 @@ const TradeExecutionPanel = ({ symbol, currentPrice, balance, onTrade }: TradeEx
               disabled={!quantity || parseFloat(quantity) <= 0}
             >
               <TrendingDown className="w-4 h-4 mr-2" />
-              Vendre
+              {t('dashboard.sell')}
             </Button>
           </div>
         </TabsContent>

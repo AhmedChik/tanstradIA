@@ -1,7 +1,9 @@
 import { GraduationCap, PlayCircle, BookOpen, Trophy, Clock, Star, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from 'react-i18next';
 
 const MasterclassSection = () => {
+  const { t } = useTranslation();
   const courses = [
     {
       title: "Trading pour Débutants",
@@ -48,10 +50,10 @@ const MasterclassSection = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6">
             <GraduationCap className="w-4 h-4 text-primary" />
-            <span className="text-sm text-muted-foreground">Centre MasterClass</span>
+            <span className="text-sm text-muted-foreground">{t('masterclass.title')}</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            Apprenez des <span className="text-gradient">Meilleurs Experts</span>
+            {t('masterclass.subtitle')} <span className="text-gradient">Experts</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Une académie complète avec des cours premium pour devenir un trader confiant et rentable
@@ -60,7 +62,7 @@ const MasterclassSection = () => {
 
         <div className="grid lg:grid-cols-3 gap-8 mb-16">
           {courses.map((course, index) => (
-            <div 
+            <div
               key={index}
               className="glass rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-300 group"
             >
@@ -68,15 +70,14 @@ const MasterclassSection = () => {
               <div className="h-48 bg-gradient-to-br from-primary/20 to-success/20 flex items-center justify-center text-6xl">
                 {course.image}
               </div>
-              
+
               {/* Course Content */}
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
-                  <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                    course.level === "Débutant" ? "bg-success/20 text-success" :
-                    course.level === "Intermédiaire" ? "bg-warning/20 text-warning" :
-                    "bg-primary/20 text-primary"
-                  }`}>
+                  <span className={`text-xs font-semibold px-3 py-1 rounded-full ${course.level === "Débutant" ? "bg-success/20 text-success" :
+                      course.level === "Intermédiaire" ? "bg-warning/20 text-warning" :
+                        "bg-primary/20 text-primary"
+                    }`}>
                     {course.level}
                   </span>
                   <div className="flex items-center gap-1">
@@ -84,11 +85,11 @@ const MasterclassSection = () => {
                     <span className="text-sm font-semibold">{course.rating}</span>
                   </div>
                 </div>
-                
+
                 <h3 className="text-lg font-semibold mb-3 group-hover:text-primary transition-colors">
                   {course.title}
                 </h3>
-                
+
                 <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                   <div className="flex items-center gap-1">
                     <BookOpen className="w-4 h-4" />
@@ -99,7 +100,7 @@ const MasterclassSection = () => {
                     <span>{course.duration}</span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between pt-4 border-t border-border">
                   <span className="text-sm text-muted-foreground">
                     {course.students.toLocaleString()} étudiants
@@ -132,7 +133,7 @@ const MasterclassSection = () => {
                 ))}
               </div>
             </div>
-            
+
             <div className="text-center md:text-right">
               <div className="inline-block glass rounded-2xl p-8">
                 <div className="text-5xl font-bold text-gradient mb-2">150+</div>

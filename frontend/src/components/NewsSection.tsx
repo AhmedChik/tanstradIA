@@ -1,7 +1,9 @@
 import { Newspaper, Clock, TrendingUp, Globe, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from 'react-i18next';
 
 const NewsSection = () => {
+  const { t } = useTranslation();
   const news = [
     {
       category: "Crypto",
@@ -46,13 +48,13 @@ const NewsSection = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6">
             <Newspaper className="w-4 h-4 text-primary" />
-            <span className="text-sm text-muted-foreground">Hub d'Actualités</span>
+            <span className="text-sm text-muted-foreground">{t('news.title')}</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
             Restez <span className="text-gradient">Informé</span> en Temps Réel
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Actualités financières, résumés IA et alertes économiques pour garder une longueur d'avance
+            {t('news.subtitle')}
           </p>
         </div>
 
@@ -76,7 +78,7 @@ const NewsSection = () => {
                   <span className="text-success font-semibold">{aiSummary.sentiment}</span>
                 </div>
                 <div className="h-2 rounded-full bg-secondary overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-gradient-primary rounded-full transition-all duration-500"
                     style={{ width: `${aiSummary.confidence}%` }}
                   />
@@ -105,19 +107,18 @@ const NewsSection = () => {
           {/* News Feed */}
           <div className="lg:col-span-2 space-y-4">
             {news.map((item, index) => (
-              <article 
+              <article
                 key={index}
                 className="glass rounded-2xl p-6 hover:border-primary/30 transition-all duration-300 group cursor-pointer"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                        item.category === "Crypto" ? "bg-primary/20 text-primary" :
-                        item.category === "Forex" ? "bg-success/20 text-success" :
-                        item.category === "Actions" ? "bg-warning/20 text-warning" :
-                        "bg-destructive/20 text-destructive"
-                      }`}>
+                      <span className={`text-xs font-semibold px-3 py-1 rounded-full ${item.category === "Crypto" ? "bg-primary/20 text-primary" :
+                          item.category === "Forex" ? "bg-success/20 text-success" :
+                            item.category === "Actions" ? "bg-warning/20 text-warning" :
+                              "bg-destructive/20 text-destructive"
+                        }`}>
                         {item.category}
                       </span>
                       <div className="flex items-center gap-1 text-muted-foreground">
@@ -129,9 +130,8 @@ const NewsSection = () => {
                       {item.title}
                     </h3>
                   </div>
-                  <div className={`w-3 h-3 rounded-full flex-shrink-0 mt-2 ${
-                    item.impact === "high" ? "bg-success animate-pulse" : "bg-warning"
-                  }`} />
+                  <div className={`w-3 h-3 rounded-full flex-shrink-0 mt-2 ${item.impact === "high" ? "bg-success animate-pulse" : "bg-warning"
+                    }`} />
                 </div>
               </article>
             ))}

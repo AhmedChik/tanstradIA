@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,12 +7,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff, TrendingUp, Mail, Lock } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
-import { login as apiLogin, setToken } from "@/lib/api";
+import { login as apiLogin, setToken, clearToken, setUserEmail, setUserName, User } from "@/lib/api";
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from "@/components/LanguageSelector";
 
-type LoginResponse = { access_token: string; user: unknown };
+type LoginResponse = { access_token: string; user: User };
 type ApiErrorShape = { status: number; data: unknown };
 
 const Login = () => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,16 +23,32 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
+    // Clear any existing token before login
+    clearToken();
+
     try {
       const res = await apiLogin(email, password) as LoginResponse;
       if (res && res.access_token) {
         setToken(res.access_token, rememberMe);
-        navigate("/dashboard");
+        console.log('[LOGIN] New token saved:', res.access_token.substring(0, 20) + '...');
+
+        // Sauvegarder l'email et le nom de l'utilisateur
+        setUserEmail(email);
+        if (res.user) {
+          setUserName(res.user.first_name || null, res.user.last_name || null);
+          console.log('[LOGIN] User info saved:', res.user.first_name, res.user.last_name);
+        }
+
+        // Rediriger vers la page de retour ou dashboard
+        const returnTo = (location.state as any)?.returnTo || "/dashboard";
+        navigate(returnTo);
       } else {
         setError("Token non reçu depuis le serveur");
       }
@@ -62,7 +81,10 @@ const Login = () => {
             Trade<span className="text-primary">Sense</span> AI
           </span>
         </Link>
-        <ThemeToggle />
+        <div className="flex gap-2">
+          <LanguageSelector />
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* Login Form */}
@@ -70,17 +92,17 @@ const Login = () => {
         <Card className="w-full max-w-md bg-card/80 backdrop-blur-xl border-border/50">
           <CardHeader className="text-center space-y-2">
             <CardTitle className="text-2xl font-bold text-foreground">
-              Bon retour parmi nous
+              {t('auth.welcomeBack')}
             </CardTitle>
             <CardDescription className="text-muted-foreground">
-              Connectez-vous pour accéder à votre tableau de bord
+              {t('auth.signIn')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-foreground">Email</Label>
+                <Label htmlFor="email" className="text-foreground">{t('auth.email')}</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
@@ -96,7 +118,7 @@ const Login = () => {
 
               {/* Password */}
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-foreground">Mot de passe</Label>
+                <Label htmlFor="password" className="text-foreground">{t('auth.password')}</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
@@ -126,17 +148,17 @@ const Login = () => {
                     onCheckedChange={(checked) => setRememberMe(checked as boolean)}
                   />
                   <Label htmlFor="remember" className="text-sm text-muted-foreground cursor-pointer">
-                    Se souvenir de moi
+                    {t('auth.rememberMe')}
                   </Label>
                 </div>
                 <Link to="/forgot-password" className="text-sm text-primary hover:underline">
-                  Mot de passe oublié ?
+                  {t('auth.forgotPassword')}
                 </Link>
               </div>
 
               {/* Submit */}
               <Button type="submit" variant="hero" size="lg" className="w-full" disabled={loading}>
-                {loading ? "Connexion…" : "Se connecter"}
+                {loading ? t('common.loading') : t('auth.signIn')}
               </Button>
 
               {error && <div className="text-sm text-destructive text-center">{String(error)}</div>}
@@ -172,9 +194,9 @@ const Login = () => {
 
               {/* Sign Up Link */}
               <p className="text-center text-sm text-muted-foreground">
-                Pas encore de compte ?{" "}
+                {t('auth.noAccount')}{" "}
                 <Link to="/register" className="text-primary hover:underline font-medium">
-                  Créer un compte
+                  {t('auth.createAccount')}
                 </Link>
               </p>
             </form>
@@ -184,7 +206,7 @@ const Login = () => {
 
       {/* Footer */}
       <footer className="relative z-10 p-6 text-center text-sm text-muted-foreground">
-        © 2024 TradeSense AI. Tous droits réservés.
+        {t('footer.copyright')}
       </footer>
     </div>
   );

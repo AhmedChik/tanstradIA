@@ -7,6 +7,10 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(180), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
+    first_name = db.Column(db.String(100), nullable=True)
+    last_name = db.Column(db.String(100), nullable=True)
+    phone = db.Column(db.String(20), nullable=True)
+    currency = db.Column(db.String(10), default="MAD")  # MAD, USD, EUR, GBP
     role = db.Column(db.String(30), default="user")  # user | superadmin
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 

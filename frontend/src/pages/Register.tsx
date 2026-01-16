@@ -7,12 +7,16 @@ import { Checkbox } from '@/components/ui/checkbox';
 import ThemeToggle from '@/components/ThemeToggle';
 import { toast } from 'sonner';
 import { register as apiRegister, login as apiLogin, setToken } from '@/lib/api';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '@/components/LanguageSelector';
 
 const Register = () => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     password: '',
@@ -25,7 +29,7 @@ const Register = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      toast.error('Les mots de passe ne correspondent pas');
+      toast.error(t('auth.invalidCredentials'));
       return;
     }
     if (!formData.acceptTerms) {
@@ -37,20 +41,20 @@ const Register = () => {
     setLoading(true);
     (async () => {
       try {
-        await apiRegister(formData.email, formData.password);
-        toast.success('Compte créé avec succès — connexion en cours...');
+        await apiRegister(formData.email, formData.password, formData.firstName, formData.lastName);
+        toast.success(t('auth.registerSuccess'));
         // auto-login
         const res = await apiLogin(formData.email, formData.password);
         if (res && (res as any).access_token) {
           setToken((res as any).access_token, true);
           navigate('/dashboard');
         } else {
-          toast.success('Compte créé — veuillez vous connecter.');
+          toast.success(t('auth.registerSuccess'));
           navigate('/login');
         }
       } catch (err: any) {
         // backend returns { error: '...' } on failure
-        const msg = err?.data?.error || err?.data || err?.message || 'Erreur lors de l\'inscription';
+        const msg = err?.data?.error || err?.data || err?.message || t('common.error');
         toast.error(String(msg));
       } finally {
         setLoading(false);
@@ -64,7 +68,7 @@ const Register = () => {
       <div className="absolute inset-0 bg-gradient-glow opacity-30" />
       <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-primary/10 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-accent/10 rounded-full blur-3xl" />
-      
+
       {/* Header */}
       <header className="relative z-10 flex items-center justify-between p-4 sm:p-6">
         <Link to="/" className="flex items-center gap-2">
@@ -73,7 +77,10 @@ const Register = () => {
           </div>
           <span className="text-xl font-bold text-foreground">TradeSense</span>
         </Link>
-        <ThemeToggle />
+        <div className="flex gap-2">
+          <LanguageSelector />
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* Main Content */}
@@ -81,34 +88,48 @@ const Register = () => {
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Créer un compte</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-2">{t('auth.createAccount')}</h1>
             <p className="text-muted-foreground">
-              Rejoignez TradeSense et commencez votre challenge
+              {t('auth.joinUs')}
             </p>
           </div>
 
           {/* Form Card */}
           <div className="glass rounded-2xl p-6 sm:p-8">
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Full Name */}
+              {/* First Name */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Nom complet</label>
+                <label className="text-sm font-medium text-foreground">{t('auth.firstName')}</label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
                     type="text"
-                    placeholder="John Doe"
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    placeholder="John"
+                    value={formData.firstName}
+                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                     className="pl-10"
-                    required
+                  />
+                </div>
+              </div>
+
+              {/* Last Name */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">{t('auth.lastName')}</label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    placeholder="Doe"
+                    value={formData.lastName}
+                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    className="pl-10"
                   />
                 </div>
               </div>
 
               {/* Email */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Email</label>
+                <label className="text-sm font-medium text-foreground">{t('auth.email')}</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
@@ -139,7 +160,7 @@ const Register = () => {
 
               {/* Password */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Mot de passe</label>
+                <label className="text-sm font-medium text-foreground">{t('auth.password')}</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
@@ -162,7 +183,7 @@ const Register = () => {
 
               {/* Confirm Password */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Confirmer le mot de passe</label>
+                <label className="text-sm font-medium text-foreground">{t('auth.confirmPassword')}</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
@@ -194,27 +215,27 @@ const Register = () => {
                 <label htmlFor="terms" className="text-sm text-muted-foreground">
                   J'accepte les{' '}
                   <Link to="/terms" className="text-primary hover:underline">
-                    conditions d'utilisation
+                    {t('footer.terms')}
                   </Link>{' '}
                   et la{' '}
                   <Link to="/privacy" className="text-primary hover:underline">
-                    politique de confidentialité
+                    {t('footer.privacy')}
                   </Link>
                 </label>
               </div>
 
               {/* Submit Button */}
               <Button type="submit" className="w-full bg-gradient-primary hover:opacity-90 text-background font-semibold" disabled={loading}>
-                {loading ? 'Création en cours…' : 'Créer mon compte'}
+                {loading ? t('common.loading') : t('auth.createAccount')}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </form>
 
             {/* Login Link */}
             <p className="text-center text-sm text-muted-foreground mt-6">
-              Déjà un compte?{' '}
+              {t('auth.hasAccount')}{' '}
               <Link to="/login" className="text-primary hover:underline font-medium">
-                Se connecter
+                {t('auth.signIn')}
               </Link>
             </p>
           </div>
@@ -224,7 +245,7 @@ const Register = () => {
       {/* Footer */}
       <footer className="relative z-10 text-center p-4">
         <p className="text-sm text-muted-foreground">
-          © 2024 TradeSense. Tous droits réservés.
+          {t('footer.copyright')}
         </p>
       </footer>
     </div>

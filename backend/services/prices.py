@@ -28,11 +28,17 @@ def get_yahoo_history(ticker: str, period="1d", interval="1m", limit=300):
     if hist is None or hist.empty:
         raise ValueError("No history data")
 
-    # format pour Lightweight Charts: {time, value}
+    # format pour Lightweight Charts: {time, open, high, low, close}
     hist = hist.tail(limit)
     points = []
     for idx, row in hist.iterrows():
         # idx est un Timestamp -> convert en unix seconds
         ts = int(idx.to_pydatetime().timestamp())
-        points.append({"time": ts, "value": float(row["Close"])})
+        points.append({
+            "time": ts, 
+            "open": float(row["Open"]),
+            "high": float(row["High"]),
+            "low": float(row["Low"]),
+            "close": float(row["Close"])
+        })
     return points

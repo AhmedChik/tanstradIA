@@ -1,16 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Shield, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-glow opacity-50" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-success/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
-      
+
       {/* Grid Pattern */}
-      <div 
+      <div
         className="absolute inset-0 opacity-5"
         style={{
           backgroundImage: `linear-gradient(hsl(var(--primary) / 0.3) 1px, transparent 1px),
@@ -19,51 +24,56 @@ const HeroSection = () => {
         }}
       />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 py-20">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 animate-slide-up">
             <Zap className="w-4 h-4 text-primary" />
-            <span className="text-sm text-muted-foreground">Propulsé par l'Intelligence Artificielle</span>
+            <span className="text-sm text-muted-foreground">{t('hero.badge')}</span>
           </div>
 
           {/* Main Heading */}
-          <h1 
+          <h1
             className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 animate-slide-up"
             style={{ animationDelay: "0.1s" }}
           >
-            Tradez Plus{" "}
-            <span className="text-gradient">Intelligemment</span>
-            <br />
-            avec TradeSense AI
+            {t('hero.title')}
           </h1>
 
           {/* Subtitle */}
-          <p 
+          <p
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-slide-up"
             style={{ animationDelay: "0.2s" }}
           >
-            La plateforme de trading nouvelle génération qui combine IA avancée, 
-            actualités en temps réel et une communauté de traders pour vous guider 
-            vers le succès.
+            {t('hero.subtitle')}
           </p>
 
           {/* CTA Buttons */}
-          <div 
+          <div
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up"
             style={{ animationDelay: "0.3s" }}
           >
-            <Button variant="hero" size="lg" className="w-full sm:w-auto">
-              Commencer Maintenant
+            <Button
+              variant="hero"
+              size="lg"
+              className="w-full sm:w-auto"
+              onClick={() => navigate("/pricing")}
+            >
+              {t('hero.cta')}
               <ArrowRight className="w-5 h-5" />
             </Button>
-            <Button variant="glass" size="lg" className="w-full sm:w-auto">
-              Voir la Démo
+            <Button
+              variant="glass"
+              size="lg"
+              className="w-full sm:w-auto"
+              onClick={() => window.open('https://calendly.com/tradesense-ai/demo', '_blank')}
+            >
+              {t('hero.demo')}
             </Button>
           </div>
 
           {/* Stats */}
-          <div 
+          <div
             className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-slide-up"
             style={{ animationDelay: "0.4s" }}
           >
