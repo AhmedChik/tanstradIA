@@ -4,8 +4,9 @@ services:
     name: tradesense-api-backend
     runtime: python
     plan: free
-    buildCommand: cd backend && bash build.sh
-    startCommand: cd backend && gunicorn wsgi:app --bind 0.0.0.0:$PORT
+    rootDir: backend
+    buildCommand: bash build.sh
+    startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT
     envVars:
       - key: SECRET_KEY
         generateValue: true
