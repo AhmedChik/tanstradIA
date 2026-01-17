@@ -24,15 +24,15 @@
    - **Name**: `tradesense-api`
    - **Region**: Même région que la DB (Frankfurt)
    - **Branch**: `main`
-   - **Root Directory**: `backend`
+   - **Root Directory**: Laissez VIDE ⚠️
    - **Runtime**: `Python 3`
    - **Build Command**: 
      ```bash
-     pip install --upgrade pip && pip install -r requirements.txt && pip install gunicorn psycopg2-binary
+     cd backend && pip install --upgrade pip && pip install -r requirements.txt && pip install gunicorn psycopg2-binary
      ```
    - **Start Command**: 
      ```bash
-     gunicorn wsgi:app --bind 0.0.0.0:$PORT
+     cd backend && gunicorn wsgi:app --bind 0.0.0.0:$PORT
      ```
 
    **Advanced Settings:**
