@@ -7,8 +7,6 @@ services:
     buildCommand: cd backend && bash build.sh
     startCommand: cd backend && gunicorn wsgi:app --bind 0.0.0.0:$PORT
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.0
       - key: SECRET_KEY
         generateValue: true
       - key: JWT_SECRET_KEY
