@@ -3,6 +3,7 @@ services:
   - type: web
     name: tanstrad-api
     runtime: python
+    plan: free
     buildCommand: cd backend && bash build.sh
     startCommand: cd backend && gunicorn wsgi:app --bind 0.0.0.0:$PORT
     envVars:
