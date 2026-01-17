@@ -13,6 +13,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+
+const API_BASE = import.meta.env.VITE_API_URL || '';
 import {
     Select,
     SelectContent,
@@ -68,7 +70,7 @@ const Admin = () => {
         setLoading(true);
         try {
             // Charger les utilisateurs
-            const usersResponse = await fetch('http://localhost:5000/api/admin/users', {
+            const usersResponse = await fetch(`${API_BASE}/api/admin/users`, {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             });
 
@@ -83,7 +85,7 @@ const Admin = () => {
             setUsers(usersData.users || []);
 
             // Charger tous les challenges
-            const challengesResponse = await fetch('http://localhost:5000/api/admin/challenges', {
+            const challengesResponse = await fetch(`${API_BASE}/api/admin/challenges`, {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             });
 
@@ -101,7 +103,7 @@ const Admin = () => {
 
     const updateChallengeStatus = async (challengeId: number, newStatus: 'passed' | 'failed') => {
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/challenges/${challengeId}/status`, {
+            const response = await fetch(`${API_BASE}/api/admin/challenges/${challengeId}/status`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

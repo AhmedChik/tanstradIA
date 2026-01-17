@@ -10,7 +10,8 @@ with app.app_context():
         users = [
             User(email="alice@example.com", password_hash=generate_password_hash("password1"), currency="MAD"),
             User(email="bob@example.com", password_hash=generate_password_hash("password2"), currency="MAD"),
-            User(email="admin@example.com", password_hash=generate_password_hash("adminpass"), role="superadmin", currency="MAD"),
+            User(email="superadmin@example.com", password_hash=generate_password_hash("superadminpass"), role="superadmin", currency="MAD"),
+            User(email="admin@example.com", password_hash=generate_password_hash("adminpass"), role="admin", currency="MAD"),
         ]
         db.session.add_all(users)
         db.session.commit()

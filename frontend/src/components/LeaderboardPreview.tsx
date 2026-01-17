@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 interface LeaderboardEntry {
     rank: number;
     user_name: string;
@@ -28,7 +30,7 @@ const LeaderboardPreview = () => {
     ];
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/leaderboard")
+        fetch(`${API_BASE}/api/leaderboard`)
             .then((res) => res.json())
             .then((data) => {
                 // Ajouter le rang
