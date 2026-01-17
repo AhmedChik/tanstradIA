@@ -21,11 +21,16 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    CORS(app, resources={r"/api/*": {
-        "origins": app.config["CORS_ORIGINS"].split(","),
-        "allow_headers": ["Content-Type", "Authorization"],
-        "expose_headers": ["Content-Type", "Authorization"]
-    }})
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": app.config["CORS_ORIGINS"].split(","),
+            "allow_headers": ["Content-Type", "Authorization"],
+            "expose_headers": ["Content-Type", "Authorization"]
+        },
+        r"/*": {
+            "origins": "*"  # Allow all for health check and root
+        }
+    })
     db.init_app(app)
     JWTManager(app)
 
@@ -40,7 +45,14 @@ def create_app():
     app.register_blueprint(settings_bp)
     app.register_blueprint(admin_bp)
     
+    @app.route("/")
+    def root():
+        return {"message": "TradeSense AI API is running", "status": "ok"}
 
+    @app.route("/health")
+    def health():
+        return {"status": "ok"}
+    
     @app.before_request
     def log_request_info():
         if request.path.startswith('/api/'):
@@ -51,10 +63,6 @@ def create_app():
                 print(f"[DEBUG] Authorization header present: {auth_header[:20]}...")
             else:
                 print("[DEBUG] No Authorization header")
-
-    @app.get("/health")
-    def health():
-        return {"status": "ok"}
 
     with app.app_context():
         db.create_all()
